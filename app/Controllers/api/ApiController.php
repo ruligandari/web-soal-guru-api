@@ -3,6 +3,8 @@
 namespace App\Controllers\Api;
 
 use App\Controllers\BaseController;
+use App\Models\AdminModel;
+use App\Models\PengaturanModel;
 use App\Models\SiswaModel;
 use App\Models\SoalModel;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -11,10 +13,14 @@ class ApiController extends BaseController
 {
     protected $soalModel;
     protected $siswaModel;
+    protected $pengaturanModel;
+    protected $adminModel;
     public function __construct()
     {
         $this->soalModel = new SoalModel();
         $this->siswaModel = new SiswaModel();
+        $this->pengaturanModel = new PengaturanModel();
+        $this->adminModel = new AdminModel();
     }
     public function index()
     {
@@ -46,7 +52,7 @@ class ApiController extends BaseController
         // return json
         return $this->response->setJSON($data);
     }
-    
+
     public function readSoalPost()
     {
         $id = $this->request->getPost('id');
@@ -73,9 +79,13 @@ class ApiController extends BaseController
             // insert ke table siswa
             $this->siswaModel->insert($data);
 
+            // get ID Insert
+            $id = $this->siswaModel->getInsertID();
+
             $returnData =
                 [
                     'success' => true,
+                    'id_siswa' => $id,
                     'message' => 'Data berhasil disimpan'
                 ];
 
@@ -90,6 +100,39 @@ class ApiController extends BaseController
 
             // return json
             return $this->response->setJSON($returnData);
+        }
+    }
+
+    public function skor()
+    {
+        $data = $this->siswaModel->findAll();
+
+        // return json
+        return $this->response->setJSON($data);
+    }
+
+    public function pengaturan()
+    {
+        $data = $this->pengaturanModel->where('id', 1)->first();
+
+        $jumlah_soal = $data['jumlah_soal'];
+        $datas = [
+            'jumlah_soal' => $jumlah_soal
+        ];
+
+        // return json
+        return $this->response->setJSON($datas);
+    }
+
+    public function getNilai($id)
+    {
+
+        // cari niliai pengisian terbaru
+        $data = $this->siswaModel->where('id', $id)->orderBy('id', 'DESC')->first();
+
+        // return json
+        if ($data) {
+            return $this->response->setJSON($data);
         }
     }
 }

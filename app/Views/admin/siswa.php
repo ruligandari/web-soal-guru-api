@@ -36,7 +36,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Nama</th>
-                                    <th>Niai</th>
+                                    <th>Nilai</th>
                                     <th>Waktu Pengerjaan</th>
                                 </tr>
                             </thead>

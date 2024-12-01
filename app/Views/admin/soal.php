@@ -28,6 +28,17 @@
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
                     <button class="btn btn-primary" data-toggle="modal" data-target="#tambahModal">+ Tambah Data Soal</button>
+                    <div class="col mt-2 d-flex justify-content-end">
+                        <form action="<?= base_url('admin/pengaturan') ?>" method="POST">
+                            <div class="form-inline">
+                                <label for="">
+                                    Jumlah Soal Tampil:
+                                </label>
+                                <input type="text" value="<?= $jumlah_soal ?>" class="form-control mx-sm-3" name="jumlah_soal">
+                                <button type="submit" class="btn btn-primary">Simpan</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
