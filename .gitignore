@@ -124,3 +124,6 @@ nb-configuration.xml
 
 /results/
 /phpunit*.xml
+
+perbolehkan public/asset/vendor/ untuk dipush
+!public/asset/vendor/
