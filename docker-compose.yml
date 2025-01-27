@@ -1,0 +1,36 @@
+services:
+  web-guru-eful:
+    build: .
+    container_name: web-guru-eful
+    ports:
+      - "8084:80"  # Port lokal untuk debugging
+    volumes:
+      - ./public:/app/public
+      - ./app:/app/app
+      - ./vendor:/app/vendor
+      - ./writable:/app/writable
+      - ./.env:/app/.env
+      - ./Caddyfile:/etc/caddy/Caddyfile
+    environment:
+      CI_ENVIRONMENT: production
+      DB_HOST: mysql  # Host MySQL
+      DB_USER: root
+      DB_PASSWORD: rootpassword
+      DB_DATABASE: web-guru-eful
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.web-guru-eful.rule=Host(`web-guru.hellodev.my.id`)"
+      - "traefik.http.routers.web-guru-eful.entrypoints=websecure"
+      - "traefik.http.routers.web-guru-eful.tls.certresolver=myresolver" # Gunakan resolver yang telah diatur
+      - "traefik.http.services.web-guru-eful.loadbalancer.server.port=80"
+    restart: always
+
+volumes:
+  db_data:
+
+networks:
+  traefik:
+    external:
+     name: traefik
